@@ -12,7 +12,7 @@ defmodule OpenchatElixirWeb.UserController do
       about: params["about"]
     }
 
-    created_user = %{ user | id: "f15c0fc0-ee61-46e4-b27a-b88d186f7325" }
+    created_user = %{ user | id: UUID.uuid4() }
     response_body = %{
       id: created_user.id,
       username: created_user.username,
