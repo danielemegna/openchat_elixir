@@ -1,19 +1,15 @@
 defmodule OpenchatElixirWeb.UserControllerTest do
   use OpenchatElixirWeb.ConnCase
 
-  test "GET /users", %{conn: conn} do
+  test "register and get users from /users endpoint", %{conn: conn} do
     conn = get(conn, "/users")
     assert json_response(conn, 200) == []
-  end
 
-  test "POST /users", %{conn: conn} do
-    request_body = %{
+    conn = post(conn, "/users", %{
       username: "shady90",
       password: "secure",
       about: "About shady90."
-    }
-
-    conn = post(conn, "/users", request_body)
+    })
 
     response_body = json_response(conn, 201) 
     assert response_body |> Map.keys |> Enum.count == 3
