@@ -1,4 +1,4 @@
-defmodule OpenchatElixirWeb.UserControllerTest do
+defmodule OpenchatElixirWeb.E2E.UsersApiTest do
   use OpenchatElixirWeb.ConnCase
 
   test "register and get users from /users endpoint", %{conn: conn} do
