@@ -2,7 +2,8 @@ defmodule OpenchatElixirWeb.UserController do
   use OpenchatElixirWeb, :controller
 
   def get_all(conn, _params) do
-    json(conn, [])
+    users = OpenchatElixir.GetAllUsersCommand.run()
+    json(conn, users)
   end
 
   def register(conn, params) do
