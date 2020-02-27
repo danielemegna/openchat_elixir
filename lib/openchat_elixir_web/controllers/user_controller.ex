@@ -1,19 +1,20 @@
 defmodule OpenchatElixirWeb.UserController do
   use OpenchatElixirWeb, :controller
+  alias OpenchatElixir.{GetAllUsersCommand,RegisterUserCommand,Entities.User}
 
   def get_all(conn, _params) do
-    users = OpenchatElixir.GetAllUsersCommand.run()
+    users = GetAllUsersCommand.run()
     json(conn, users)
   end
 
   def register(conn, params) do
-    user = %OpenchatElixir.Entities.User{
+    user = %User{
       id: params["id"],
       username: params["username"],
       about: params["about"]
     }
 
-    created_user = OpenchatElixir.RegisterUserCommand.run(user)
+    created_user = RegisterUserCommand.run(user)
 
     conn
       |> put_status(:created)
