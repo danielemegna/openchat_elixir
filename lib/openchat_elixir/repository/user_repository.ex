@@ -10,7 +10,10 @@ defmodule OpenchatElixir.UserRepository do
   end
 
   def store(agent, user) do
-    Agent.update(agent, &([user | &1]))
+    new_id = UUID.uuid4()
+    ready_to_store = %{ user | id: new_id }
+    Agent.update(agent, &([ready_to_store | &1]))
+    new_id
   end
 
 end

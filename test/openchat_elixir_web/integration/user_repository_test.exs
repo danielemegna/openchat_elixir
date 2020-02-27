@@ -15,32 +15,51 @@ defmodule OpenchatElixirWeb.UserRepositoryTest do
 
   test "store and get user", %{repository: repository} do
     user = %User{
-      id: "shadyId",
       username: "shady90",
+      password: "$3curePass",
       about: "About shady90."
     }
-    UserRepository.store(repository, user)
-
+    stored_id = UserRepository.store(repository, user)
     users = UserRepository.get_all(repository)
-    assert users == [user]
+
+    assert users == [%User{
+      id: stored_id,
+      username: "shady90",
+      password: "$3curePass",
+      about: "About shady90."
+    }]
   end
 
   test "in this repository users are stored in reverse order", %{repository: repository} do
-    shadyUser = %User{
-      id: "shadyId",
+    shady_user = %User{
       username: "shady90",
-      about: "About shady90"
+      password: "$3curePass",
+      about: "About shady90."
     }
-    UserRepository.store(repository, shadyUser)
-    mariaUser = %User{
-      id: "mariaId",
+    shady_id = UserRepository.store(repository, shady_user)
+    maria_user = %User{
       username: "maria89",
+      password: "supeR$3cure",
       about: "About maria89."
     }
-    UserRepository.store(repository, mariaUser)
+    maria_id = UserRepository.store(repository, maria_user)
 
     users = UserRepository.get_all(repository)
-    assert users == [mariaUser, shadyUser]
+
+    assert users == [
+      %User{
+        id: maria_id,
+        username: "maria89",
+        password: "supeR$3cure",
+        about: "About maria89."
+      },
+      %User{
+        id: shady_id,
+        username: "shady90",
+        password: "$3curePass",
+        about: "About shady90."
+      }
+    ]
   end
 
 end
