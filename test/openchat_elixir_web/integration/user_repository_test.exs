@@ -4,23 +4,24 @@ defmodule OpenchatElixirWeb.UserRepositoryTest do
   alias OpenchatElixir.Entities.User
 
   setup do
-    repository = UserRepository.start_link()
-    %{repository: repository}
+    Agent.start_link(fn -> [] end, name: :user_repository)
+    :ok
   end
 
-  test "get user from empty repository", %{repository: repository} do
-    users = UserRepository.get_all(repository)
+
+  test "get user from empty repository" do
+    users = UserRepository.get_all()
     assert users == []  
   end
 
-  test "store and get user", %{repository: repository} do
+  test "store and get user" do
     user = %User{
       username: "shady90",
       password: "$3curePass",
       about: "About shady90."
     }
-    stored_id = UserRepository.store(repository, user)
-    users = UserRepository.get_all(repository)
+    stored_id = UserRepository.store(user)
+    users = UserRepository.get_all()
 
     assert users == [%User{
       id: stored_id,
@@ -30,21 +31,21 @@ defmodule OpenchatElixirWeb.UserRepositoryTest do
     }]
   end
 
-  test "in this repository users are stored in reverse order", %{repository: repository} do
+  test "in this repository users are stored in reverse order" do
     shady_user = %User{
       username: "shady90",
       password: "$3curePass",
       about: "About shady90."
     }
-    shady_id = UserRepository.store(repository, shady_user)
+    shady_id = UserRepository.store(shady_user)
     maria_user = %User{
       username: "maria89",
       password: "supeR$3cure",
       about: "About maria89."
     }
-    maria_id = UserRepository.store(repository, maria_user)
+    maria_id = UserRepository.store(maria_user)
 
-    users = UserRepository.get_all(repository)
+    users = UserRepository.get_all()
 
     assert users == [
       %User{

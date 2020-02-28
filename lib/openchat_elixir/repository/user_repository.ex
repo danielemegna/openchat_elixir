@@ -1,18 +1,13 @@
 defmodule OpenchatElixir.UserRepository do
 
-  def start_link() do
-    {:ok, agent} = Agent.start_link(fn -> [] end)
-    agent
+  def get_all() do
+    Agent.get(:user_repository, &(&1))
   end
 
-  def get_all(agent) do
-    Agent.get(agent, &(&1))
-  end
-
-  def store(agent, user) do
+  def store(user) do
     new_id = UUID.uuid4()
     ready_to_store = %{ user | id: new_id }
-    Agent.update(agent, &([ready_to_store | &1]))
+    Agent.update(:user_repository, &([ready_to_store | &1]))
     new_id
   end
 
