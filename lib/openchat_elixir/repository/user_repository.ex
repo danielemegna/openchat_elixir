@@ -1,6 +1,11 @@
 defmodule OpenchatElixir.UserRepository do
+  use Agent
 
-  def get_all() do
+   def start_link(_opts) do
+    Agent.start_link(fn -> [] end, name: :user_repository)
+  end
+
+  def get_all do
     Agent.get(:user_repository, &(&1))
   end
 

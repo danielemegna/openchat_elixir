@@ -4,7 +4,7 @@ defmodule OpenchatElixirWeb.UserRepositoryTest do
   alias OpenchatElixir.Entities.User
 
   setup do
-    Agent.start_link(fn -> [] end, name: :user_repository)
+    UserRepository.start_link([])
     :ok
   end
 
