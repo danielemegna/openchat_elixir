@@ -1,8 +1,9 @@
 defmodule OpenchatElixir.RegisterUserCommand do
+  alias OpenchatElixir.UserRepository
 
   def run(user) do
-    created_user = %{ user | id: UUID.uuid4() }
-    created_user
+    stored_id = UserRepository.store(user)
+    %{ user | id: stored_id }
   end
 
 end

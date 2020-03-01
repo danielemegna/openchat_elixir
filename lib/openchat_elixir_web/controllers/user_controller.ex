@@ -4,7 +4,14 @@ defmodule OpenchatElixirWeb.UserController do
 
   def get_all(conn, _params) do
     users = GetAllUsersCommand.run()
-    json(conn, users)
+
+    json(put_status(conn, :ok), Enum.map(users, fn(user) ->
+      %{
+        id: user.id,
+        username: user.username,
+        about: user.about
+      }
+    end))
   end
 
   def register(conn, params) do
@@ -16,13 +23,11 @@ defmodule OpenchatElixirWeb.UserController do
 
     created_user = RegisterUserCommand.run(user)
 
-    conn
-      |> put_status(:created)
-      |> json(%{
-        id: created_user.id,
-        username: created_user.username,
-        about: created_user.about
-      })
+    json(put_status(conn, :created), %{
+      id: created_user.id,
+      username: created_user.username,
+      about: created_user.about
+    })
   end
 
 
