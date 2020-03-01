@@ -29,6 +29,10 @@ defmodule OpenchatElixirWeb.ConnCase do
   end
 
   setup _tags do
+    Application.start(:openchat_elixir)
+    on_exit(fn ->
+      Application.stop(:openchat_elixir)
+    end)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

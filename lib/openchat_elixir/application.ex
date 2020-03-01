@@ -9,9 +9,10 @@ defmodule OpenchatElixir.Application do
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
-      OpenchatElixirWeb.Endpoint
+      OpenchatElixirWeb.Endpoint,
       # Starts a worker by calling: OpenchatElixir.Worker.start_link(arg)
       # {OpenchatElixir.Worker, arg},
+      OpenchatElixir.UserRepository
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
