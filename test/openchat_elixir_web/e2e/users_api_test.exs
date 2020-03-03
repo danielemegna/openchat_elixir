@@ -1,10 +1,12 @@
 defmodule OpenchatElixirWeb.E2E.UsersApiTest do
   use OpenchatElixirWeb.ConnCase
 
-  test "register and get users from /users endpoint", %{conn: conn} do
+  test "get users from /users endpoint on new empty application", %{conn: conn} do
     conn = get(conn, "/users")
     assert json_response(conn, 200) == []
+  end
 
+  test "register and get users from /users endpoint", %{conn: conn} do
     conn = post(conn, "/users", %{
       username: "shady90",
       password: "secure",
