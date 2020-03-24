@@ -1,16 +1,16 @@
-defmodule OpenchatElixirWeb.UserRepositoryTest do
+defmodule OpenchatElixirWeb.AgentUserRepositoryTest do
   use ExUnit.Case 
-  alias OpenchatElixir.UserRepository
+  alias OpenchatElixir.AgentUserRepository
   alias OpenchatElixir.Entities.User
 
   setup do
-    UserRepository.start_link([])
+    AgentUserRepository.start_link([])
     :ok
   end
 
 
   test "get user from empty repository" do
-    users = UserRepository.get_all()
+    users = AgentUserRepository.get_all()
     assert users == []  
   end
 
@@ -20,8 +20,8 @@ defmodule OpenchatElixirWeb.UserRepositoryTest do
       password: "$3curePass",
       about: "About shady90."
     }
-    stored_id = UserRepository.store(user)
-    users = UserRepository.get_all()
+    stored_id = AgentUserRepository.store(user)
+    users = AgentUserRepository.get_all()
 
     assert users == [%User{
       id: stored_id,
@@ -37,15 +37,15 @@ defmodule OpenchatElixirWeb.UserRepositoryTest do
       password: "$3curePass",
       about: "About shady90."
     }
-    shady_id = UserRepository.store(shady_user)
+    shady_id = AgentUserRepository.store(shady_user)
     maria_user = %User{
       username: "maria89",
       password: "supeR$3cure",
       about: "About maria89."
     }
-    maria_id = UserRepository.store(maria_user)
+    maria_id = AgentUserRepository.store(maria_user)
 
-    users = UserRepository.get_all()
+    users = AgentUserRepository.get_all()
 
     assert users == [
       %User{
