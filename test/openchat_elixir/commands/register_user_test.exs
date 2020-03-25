@@ -18,8 +18,9 @@ defmodule OpenchatElixirWeb.RegisterUserCommandTest do
     }
     expect(MockUserRepository, :store, 1, fn ^user_to_register -> "stored_uuid" end)
 
-    registered_user = RegisterUserCommand.run(user_to_register, MockUserRepository)
+    {result, registered_user} = RegisterUserCommand.run(user_to_register, MockUserRepository)
 
+    assert :ok == result
     assert registered_user == %{ user_to_register | id: "stored_uuid" }
     Mox.verify!
   end

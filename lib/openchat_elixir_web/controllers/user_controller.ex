@@ -21,7 +21,7 @@ defmodule OpenchatElixirWeb.UserController do
       about: params["about"]
     }
 
-    created_user = RegisterUserCommand.run(user)
+    {:ok, created_user} = RegisterUserCommand.run(user)
 
     json(put_status(conn, :created), %{
       id: created_user.id,
