@@ -12,6 +12,9 @@ defmodule OpenchatElixirWeb.AgentUserRepositoryTest do
   test "get user from empty repository" do
     users = AgentUserRepository.get_all()
     assert users == []  
+
+    user = AgentUserRepository.get_by_username("not_present")
+    assert user == nil
   end
 
   test "store and get user" do
@@ -20,15 +23,18 @@ defmodule OpenchatElixirWeb.AgentUserRepositoryTest do
       password: "$3curePass",
       about: "About shady90."
     }
-    stored_id = AgentUserRepository.store(user)
-    users = AgentUserRepository.get_all()
 
-    assert users == [%User{
+    stored_id = AgentUserRepository.store(user)
+
+    expected_stored_user = %User{
       id: stored_id,
       username: "shady90",
       password: "$3curePass",
       about: "About shady90."
-    }]
+    }
+
+    assert expected_stored_user == AgentUserRepository.get_by_username("shady90")
+    assert [expected_stored_user] == AgentUserRepository.get_all()
   end
 
   test "in this repository users are stored in reverse order" do

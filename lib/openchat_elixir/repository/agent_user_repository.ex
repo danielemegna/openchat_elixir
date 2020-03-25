@@ -14,6 +14,12 @@ defmodule OpenchatElixir.AgentUserRepository do
   end
 
   @impl UserRepository  
+  def get_by_username(username) do
+    Agent.get(:user_repository, &(&1))
+      |> Enum.find(fn u -> u.username == username end)
+  end
+
+  @impl UserRepository  
   def store(user) do
     new_id = UUID.uuid4()
     ready_to_store = %{ user | id: new_id }
