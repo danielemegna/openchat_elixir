@@ -21,13 +21,17 @@ defmodule OpenchatElixirWeb.UserController do
       about: params["about"]
     }
 
-    {:ok, created_user} = RegisterUserCommand.run(user)
+    case(RegisterUserCommand.run(user)) do
+    {:ok, created_user} ->
+      json(put_status(conn, :created), %{
+        id: created_user.id,
+        username: created_user.username,
+        about: created_user.about
+      })
+    {:username_already_used, _} ->
+      text(put_status(conn, :bad_request), "Username already in use.")
+    end
 
-    json(put_status(conn, :created), %{
-      id: created_user.id,
-      username: created_user.username,
-      about: created_user.about
-    })
   end
 
 

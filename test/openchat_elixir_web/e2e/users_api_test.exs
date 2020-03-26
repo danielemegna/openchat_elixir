@@ -30,14 +30,13 @@ defmodule OpenchatElixirWeb.E2E.UsersApiTest do
     ]
   end
 
-  @tag :skip 
   test "register a users twice should return an error", %{conn: conn} do
     conn = post(conn, "/users", %{
       username: "shady90",
       password: "secure",
       about: "About shady90."
     })
-    response_body = json_response(conn, 201)
+    json_response(conn, 201)
 
     conn = post(conn, "/users", %{
       username: "shady90",

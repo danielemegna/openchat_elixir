@@ -5,8 +5,12 @@ defmodule OpenchatElixirWeb.RegisterUserCommandTest do
   use ExUnit.Case 
   import Mox
 
-  setup do
+  setup_all do
     Mox.defmock(MockUserRepository, for: OpenchatElixir.UserRepository)
+    :ok
+  end
+
+  setup do
     stub(MockUserRepository, :get_by_username, fn _ -> nil end)
     :ok
   end
