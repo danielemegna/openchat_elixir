@@ -7,6 +7,7 @@ defmodule OpenchatElixirWeb.RegisterUserCommandTest do
 
   setup do
     Mox.defmock(MockUserRepository, for: OpenchatElixir.UserRepository)
+    stub(MockUserRepository, :get_by_username, fn _ -> nil end)
     :ok
   end
 
@@ -22,6 +23,21 @@ defmodule OpenchatElixirWeb.RegisterUserCommandTest do
 
     assert :ok == result
     assert registered_user == %{ user_to_register | id: "stored_uuid" }
+    Mox.verify!
+  end
+
+  test "register a users twice should return an error" do
+    already_registered_user = %User{
+      username: "stored.user",
+      password: "any",
+      about: "any"
+    }
+    expect(MockUserRepository, :get_by_username, 1, fn "stored.user" -> already_registered_user end)
+
+    {result, registered_user} = RegisterUserCommand.run(already_registered_user, MockUserRepository)
+
+    assert :username_already_used == result
+    assert nil == registered_user
     Mox.verify!
   end
 
