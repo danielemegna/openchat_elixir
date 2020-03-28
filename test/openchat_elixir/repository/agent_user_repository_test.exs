@@ -10,11 +10,9 @@ defmodule OpenchatElixirWeb.AgentUserRepositoryTest do
 
 
   test "get user from empty repository" do
-    users = AgentUserRepository.get_all()
-    assert users == []  
-
-    user = AgentUserRepository.get_by_username("not_present")
-    assert user == nil
+    assert [] == AgentUserRepository.get_all()
+    assert nil == AgentUserRepository.get_by_username("not_present")
+    assert nil == AgentUserRepository.get_by_id("not_present")
   end
 
   test "store and get user" do
@@ -25,6 +23,7 @@ defmodule OpenchatElixirWeb.AgentUserRepositoryTest do
     }
 
     stored_id = AgentUserRepository.store(user)
+    assert Regex.match?(~r/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i, stored_id)
 
     expected_stored_user = %User{
       id: stored_id,
@@ -34,7 +33,10 @@ defmodule OpenchatElixirWeb.AgentUserRepositoryTest do
     }
 
     assert expected_stored_user == AgentUserRepository.get_by_username("shady90")
+    assert expected_stored_user == AgentUserRepository.get_by_id(stored_id)
     assert [expected_stored_user] == AgentUserRepository.get_all()
+    assert nil == AgentUserRepository.get_by_username("not_present")
+    assert nil == AgentUserRepository.get_by_id("not_present")
   end
 
   test "in this repository users are stored in reverse order" do

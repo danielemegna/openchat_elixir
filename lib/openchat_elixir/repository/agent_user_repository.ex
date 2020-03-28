@@ -20,8 +20,9 @@ defmodule OpenchatElixir.AgentUserRepository do
   end
 
   @impl UserRepository
-  def get_by_id(_user_id) do
-    nil # --- to be implemented
+  def get_by_id(user_id) do
+    Agent.get(:user_repository, &(&1))
+      |> Enum.find(fn u -> u.id == user_id end)
   end
 
   @impl UserRepository
