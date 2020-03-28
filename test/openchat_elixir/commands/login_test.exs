@@ -19,9 +19,10 @@ defmodule OpenchatElixirWeb.LoginCommandTest do
 
   test "authenticate registered user" do
     registered_user = %User{
+      id: "any_id",
       username: "stored.user",
       password: "pa$$word",
-      about: "any"
+      about: "About stored user."
     }
     expect(MockUserRepository, :get_by_username, 1, fn "stored.user" -> registered_user end)
 
@@ -34,6 +35,7 @@ defmodule OpenchatElixirWeb.LoginCommandTest do
 
   test "do not authenticate registered user with wrong password" do
     registered_user = %User{
+      id: "any_id",
       username: "stored.user",
       password: "pa$$word",
       about: "any"

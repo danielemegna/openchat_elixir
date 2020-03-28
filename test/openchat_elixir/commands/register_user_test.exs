@@ -27,6 +27,7 @@ defmodule OpenchatElixirWeb.RegisterUserCommandTest do
 
   test "register a users twice should return an error" do
     already_registered_user = %User{
+      id: "any_id",
       username: "stored.user",
       password: "any",
       about: "any"
