@@ -1,11 +1,12 @@
 defmodule OpenchatElixirWeb.TimelineController do
   use OpenchatElixirWeb, :controller
+  alias OpenchatElixir.GetUserTimelineCommand
 
   def get(conn, params) do
-    if(params["user_id"] != "unexisting_id") do
-      json(conn, [])
-    else
-      text(put_status(conn, :not_found), "User not found.")
+    {result, posts} = GetUserTimelineCommand.run(params["user_id"])
+    case(result) do
+      :ok -> json(conn, posts)
+      :user_not_found -> text(put_status(conn, :not_found), "User not found.")
     end
   end
 
