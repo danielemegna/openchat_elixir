@@ -10,4 +10,8 @@ defmodule OpenchatElixirWeb.TimelineController do
     end
   end
 
+  def submit_post(conn, _params) do
+    text(put_status(conn, :not_found), "User not found.")
+  end
+
 end

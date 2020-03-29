@@ -19,4 +19,11 @@ defmodule OpenchatElixirWeb.E2E.TimelineApiTest do
     assert json_response(conn, 200) == []
   end
 
+  test "post submit attempt with unexisting user", %{conn: conn} do
+    conn = post(conn, "/users/unexisting_id/timeline", %{
+      text: "Post text."
+    })
+    assert text_response(conn, 404) == "User not found."
+  end
+
 end

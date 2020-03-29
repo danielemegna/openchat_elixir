@@ -5,4 +5,5 @@ defmodule OpenchatElixirWeb.Router do
   post "/users", OpenchatElixirWeb.UserController, :register
   post "/login", OpenchatElixirWeb.LoginController, :authenticate
   get "/users/:user_id/timeline", OpenchatElixirWeb.TimelineController, :get
+  post "/users/:user_id/timeline", OpenchatElixirWeb.TimelineController, :submit_post
 end
