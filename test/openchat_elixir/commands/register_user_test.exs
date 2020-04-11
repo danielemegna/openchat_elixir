@@ -7,7 +7,21 @@ defmodule OpenchatElixirWeb.RegisterUserCommandTest do
 
   setup do
     stub(MockUserRepository, :get_by_username, fn _ -> nil end)
+    stub(MockUserRepository, :store, fn _ -> "stored.user.id" end)
     :ok
+  end
+
+  test "returns stored user with result :ok" do
+    user_to_register = %User{
+      username: "clean.coder90",
+      password: "vEry$ecure",
+      about: "It's all about craft."
+    }
+
+    {result, registered_user} = RegisterUserCommand.run(user_to_register, MockUserRepository)
+
+    assert :ok == result
+    assert registered_user == %{ user_to_register | id: "stored.user.id" }
   end
 
   test "passed UserRepository module is used to store the user" do
@@ -16,12 +30,10 @@ defmodule OpenchatElixirWeb.RegisterUserCommandTest do
       password: "vEry$ecure",
       about: "It's all about craft."
     }
-    expect(MockUserRepository, :store, 1, fn ^user_to_register -> "stored_uuid" end)
+    expect(MockUserRepository, :store, 1, fn ^user_to_register -> "stored.user.id" end)
 
-    {result, registered_user} = RegisterUserCommand.run(user_to_register, MockUserRepository)
+    RegisterUserCommand.run(user_to_register, MockUserRepository)
 
-    assert :ok == result
-    assert registered_user == %{ user_to_register | id: "stored_uuid" }
     Mox.verify!
   end
 
