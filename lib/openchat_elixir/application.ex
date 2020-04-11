@@ -12,7 +12,8 @@ defmodule OpenchatElixir.Application do
       OpenchatElixirWeb.Endpoint,
       # Starts a worker by calling: OpenchatElixir.Worker.start_link(arg)
       # {OpenchatElixir.Worker, arg},
-      OpenchatElixir.AgentUserRepository
+      OpenchatElixir.AgentUserRepository,
+      OpenchatElixir.AgentPostRepository
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
