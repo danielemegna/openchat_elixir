@@ -6,7 +6,13 @@ defmodule OpenchatElixirWeb.SubmitPostCommandTest do
   import Mox
 
   setup do
-    stub(MockUserRepository, :get_by_id, fn _ -> nil end)
+    stub(MockUserRepository, :get_by_id, fn user_id ->
+      case user_id do
+        "registered.user.id" ->
+          %User{ id: user_id, username: "any", password: "any", about: "any" }
+        _ -> nil
+      end
+    end)
     :ok
   end
 
@@ -18,14 +24,6 @@ defmodule OpenchatElixirWeb.SubmitPostCommandTest do
   end
 
   test "returns submitted post" do
-    registered_user = %User{
-      id: "registered.user.id",
-      username: "any",
-      password: "any",
-      about: "any"
-    }
-    expect(MockUserRepository, :get_by_id, 1, fn "registered.user.id" -> registered_user end)
-
     {result, post} = SubmitPostCommand.run("registered.user.id", "Post text here.", MockUserRepository)
 
     assert :ok == result
