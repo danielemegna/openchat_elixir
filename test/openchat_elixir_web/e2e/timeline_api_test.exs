@@ -21,7 +21,6 @@ defmodule OpenchatElixirWeb.E2E.TimelineApiTest do
     assert text_response(conn, 404) == "User not found."
   end
 
-  @tag :skip
   test "submit post and fetch user timeline", %{conn: conn} do
     conn = post(conn, "/users", %{ username: "any", password: "any", about: "any" })
     user_id = json_response(conn, 201)["id"]
@@ -39,10 +38,10 @@ defmodule OpenchatElixirWeb.E2E.TimelineApiTest do
     conn = get(conn, "/users/#{user_id}/timeline")
     assert json_response(conn, 200) == [
       %{
-        postId: response_body["postId"],
-        userId: user_id,
-        text: "First shady90 post.",
-        dateTime: response_body["dateTime"]
+        "postId" => response_body["postId"],
+        "userId" => user_id,
+        "text" => "First shady90 post.",
+        "dateTime" => response_body["dateTime"]
       }
     ]
   end
