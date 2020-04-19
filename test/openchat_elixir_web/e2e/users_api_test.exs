@@ -1,5 +1,6 @@
 defmodule OpenchatElixirWeb.E2E.UsersApiTest do
   use OpenchatElixirWeb.ConnCase
+  import OpenchatElixirWeb.Support.AssertionsHelper
 
   test "get users from /users endpoint on new empty application", %{conn: conn} do
     conn = get(conn, "/users")
@@ -10,7 +11,7 @@ defmodule OpenchatElixirWeb.E2E.UsersApiTest do
     response_body = register_user(conn, "shady90", "secure", "About shady90.")
 
     assert Enum.count(Map.keys(response_body)) == 3
-    assert Regex.match?(~r/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i, response_body["id"])
+    assert_valid_uuid response_body["id"]
     assert response_body["username"] == "shady90"
     assert response_body["about"] == "About shady90."
     shady90_id = response_body["id"]

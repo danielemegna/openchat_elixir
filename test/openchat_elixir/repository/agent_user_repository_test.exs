@@ -2,6 +2,7 @@ defmodule OpenchatElixirWeb.AgentUserRepositoryTest do
   use ExUnit.Case 
   alias OpenchatElixir.AgentUserRepository
   alias OpenchatElixir.Entities.User
+  import OpenchatElixirWeb.Support.AssertionsHelper
 
   setup do
     AgentUserRepository.start_link([])
@@ -23,7 +24,7 @@ defmodule OpenchatElixirWeb.AgentUserRepositoryTest do
     }
 
     stored_id = AgentUserRepository.store(user)
-    assert Regex.match?(~r/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i, stored_id)
+    assert_valid_uuid stored_id
 
     expected_stored_user = %User{
       id: stored_id,

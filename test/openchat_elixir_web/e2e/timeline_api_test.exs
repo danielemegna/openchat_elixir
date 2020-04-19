@@ -1,6 +1,7 @@
 defmodule OpenchatElixirWeb.E2E.TimelineApiTest do
   use OpenchatElixirWeb.ConnCase
   alias OpenchatElixirWeb.E2E.UsersApiTest
+  import OpenchatElixirWeb.Support.AssertionsHelper
 
   test "timeline on unexisting user", %{conn: conn} do
     conn = get(conn, "/users/unexisting_id/timeline")
@@ -27,10 +28,10 @@ defmodule OpenchatElixirWeb.E2E.TimelineApiTest do
     response_body = submit_post(conn, user_id, "First user post.")
 
     assert Enum.count(Map.keys(response_body)) == 4
-    assert Regex.match?(~r/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i, response_body["postId"])
+    assert_valid_uuid response_body["postId"]
     assert user_id == response_body["userId"]
     assert "First user post." == response_body["text"]
-    assert Regex.match?(~r/^((19|20)[0-9][0-9])[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])[T]([01][0-9]|[2][0-3])[:]([0-5][0-9])[:]([0-5][0-9])Z$/i, response_body["dateTime"])
+    assert_datetime_format response_body["dateTime"]
 
     %{ "postId" => firstPostId, "dateTime" => firstPostDateTime } = response_body
     %{ "postId" => secondPostId, "dateTime" => secondPostDateTime } = submit_post(conn, user_id, "Second user post.")

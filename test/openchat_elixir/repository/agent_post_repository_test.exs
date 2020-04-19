@@ -2,6 +2,7 @@ defmodule OpenchatElixirWeb.AgentPostRepositoryTest do
   use ExUnit.Case 
   alias OpenchatElixir.AgentPostRepository
   alias OpenchatElixir.Entities.Post
+  import OpenchatElixirWeb.Support.AssertionsHelper
 
   setup do
     AgentPostRepository.start_link([])
@@ -21,7 +22,7 @@ defmodule OpenchatElixirWeb.AgentPostRepositoryTest do
     }
 
     stored_id = AgentPostRepository.store(post)
-    assert Regex.match?(~r/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i, stored_id)
+    assert_valid_uuid stored_id
 
     expected_stored_post = %Post{
       id: stored_id,
