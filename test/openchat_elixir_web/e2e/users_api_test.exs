@@ -7,12 +7,8 @@ defmodule OpenchatElixirWeb.E2E.UsersApiTest do
   end
 
   test "register and get users from /users endpoint", %{conn: conn} do
-    conn = post(conn, "/users", %{
-      username: "shady90",
-      password: "secure",
-      about: "About shady90."
-    })
-    response_body = json_response(conn, 201) 
+    response_body = register_user(conn, "shady90", "secure", "About shady90.")
+
     assert Enum.count(Map.keys(response_body)) == 3
     assert Regex.match?(~r/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i, response_body["id"])
     assert response_body["username"] == "shady90"
@@ -46,4 +42,14 @@ defmodule OpenchatElixirWeb.E2E.UsersApiTest do
     response_text = text_response(conn, 400)
     assert response_text == "Username already in use."
   end
+
+  def register_user(conn, username, password \\ "anyPassword", about \\ "Any about.") do
+    conn = post(conn, "/users", %{
+      username: username,
+      password: password,
+      about: about
+    })
+    json_response(conn, 201)
+  end
+
 end

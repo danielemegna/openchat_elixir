@@ -1,5 +1,6 @@
 defmodule OpenchatElixirWeb.E2E.LoginApiTest do
   use OpenchatElixirWeb.ConnCase
+  alias OpenchatElixirWeb.E2E.UsersApiTest
 
   test "login attempt with invalid credentials", %{conn: conn} do
     conn = post(conn, "/login", %{
@@ -11,13 +12,7 @@ defmodule OpenchatElixirWeb.E2E.LoginApiTest do
   end
 
   test "register and login a user", %{conn: conn} do
-    conn = post(conn, "/users", %{
-      username: "shady90",
-      password: "s3cure",
-      about: "About shady90."
-    })
-    response_body = json_response(conn, 201) 
-    shady90_id = response_body["id"]
+    %{"id" => shady90_id} = UsersApiTest.register_user(conn, "shady90", "s3cure", "About shady90.")
 
     conn = post(conn, "/login", %{
       username: "shady90",
