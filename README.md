@@ -9,15 +9,30 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
-## Learn more
+## Docker dev container
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+Start it with ..
+```
+$ docker run --rm -itp 4000:4000 -v $PWD:/app -w /app elixir:alpine sh
+```
 
-### Dev notes:
+.. into the container get deps
+```
+$ mix deps.get
+```
+
+.. and run test with
+```
+$ mix test
+```
+
+Start Phoenix endpoint via exposed 4000 port with
+```
+$ mix phx.server
+```
+
+### Refactoring notes:
 
 - remove duplication in e2e regex uuid assertions
 - extract "register user" e2e util method?
+
