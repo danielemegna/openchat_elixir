@@ -28,13 +28,7 @@ defmodule OpenchatElixirWeb.E2E.UsersApiTest do
   end
 
   test "register a users twice should return an error", %{conn: conn} do
-    conn = post(conn, "/users", %{
-      username: "shady90",
-      password: "secure",
-      about: "About shady90."
-    })
-    json_response(conn, 201)
-
+    register_user(conn, "shady90", "secure", "About shady90.")
     conn = post(conn, "/users", %{
       username: "shady90",
       password: "any",
