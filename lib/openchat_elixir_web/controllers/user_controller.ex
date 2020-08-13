@@ -20,6 +20,8 @@ defmodule OpenchatElixirWeb.UserController do
         json(put_status(conn, :created), serialize_user(created_user))
       {:username_already_used, _} ->
         text(put_status(conn, :bad_request), "Username already in use.")
+      {:invalid_user_data, _} ->
+        text(put_status(conn, :bad_request), "Username and password cannot be empty.")
     end
 
   end

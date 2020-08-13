@@ -29,22 +29,34 @@ defmodule OpenchatElixirWeb.E2E.UsersApiTest do
 
   test "register a users twice should return an error", %{conn: conn} do
     register_user(conn, "shady90", "secure", "About shady90.")
-    conn = post(conn, "/users", %{
-      username: "shady90",
-      password: "any",
-      about: "any"
-    })
+    conn = do_registration_post(conn, "shady90", "any", "any")
+
     response_text = text_response(conn, 400)
     assert response_text == "Username already in use."
   end
 
+  test "cannot register with empty username or password", %{conn: conn} do
+    conn = do_registration_post(conn, "shady90", "", "any")
+    response_text = text_response(conn, 400)
+    assert response_text == "Username and password cannot be empty."
+
+    conn = do_registration_post(conn, "", "password", "any")
+    response_text = text_response(conn, 400)
+    assert response_text == "Username and password cannot be empty."
+  end
+
   def register_user(conn, username, password \\ "anyPassword", about \\ "Any about.") do
-    conn = post(conn, "/users", %{
+    conn
+    |> do_registration_post(username, password, about)
+    |> json_response(201)
+  end
+
+  defp do_registration_post(conn, username, password, about) do
+    post(conn, "/users", %{
       username: username,
       password: password,
       about: about
     })
-    json_response(conn, 201)
   end
 
 end
