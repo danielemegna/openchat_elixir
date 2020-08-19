@@ -34,5 +34,4 @@ $ mix phx.server
 ### Refactoring notes:
 
 - remove duplication in e2e regex uuid assertions
-- extract "register user" e2e util method?
-
+- FIX single e2e execution: `OpenchatElixirWeb.E2E.UsersApiTest.register_user/2` undefined (module `OpenchatElixirWeb.E2E.UsersApiTest` not available)
